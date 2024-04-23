@@ -4,7 +4,6 @@ require('dotenv').config();
 
 const app = express()
 
-
 app.use(cors())
 app.use(express.json())
 
@@ -13,3 +12,16 @@ const port = process.env.PORT || 3000
 app.listen(port, () => {
     console.log("Servidor escuchando en el puerto " + port)
 })
+
+// --------------------------------------------
+
+const dbConnect = require('./config/mongo')
+dbConnect()
+
+// --------------------------------------------
+
+app.use("/api", require("./routes")) 
+
+// --------------------------------------------
+
+app.use(express.static("storage"))
