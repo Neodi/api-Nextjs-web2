@@ -77,10 +77,8 @@ Content-Type: application/json
 ### ------GET------
 ###
 GET http://localhost:3000/api/auth/ HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjJhMzYxNWQxOGM5OWViOTlkOTE5NTAiLCJyb2xlIjpbInVzZXIiXSwiaWF0IjoxNzE0MDQyOTA2LCJleHAiOjE3MTQwNzE3MDZ9.ug_42H47dJSLnUOfcn-ezdVSJnHWEOu0rlj2m6ndyVs
-###
-GET http://localhost:3000/api/auth/ HTTP/1.1
 Authorization: Bearer {{token}}
+
 ### ------PATCH------
 ###
 PATCH http://localhost:3000/api/auth/662a2e522a21b07407db70ec HTTP/1.1
