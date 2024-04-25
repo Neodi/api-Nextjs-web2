@@ -1,21 +1,46 @@
-const { text } = require("express")
 const mongoose = require("mongoose")
 const mongooseDelete = require("mongoose-delete")
 
-const UserScheme = new mongoose.Schema(
+const ReseñaScheme = new mongoose.Schema(
+    {
+        texto:{
+            type: String,
+            required: true
+        },
+        puntuacion:{
+            type: Number,
+            required: true
+        },
+        idUsuario:{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "users",
+            required: true
+        }
+    },
+    {
+        timestamp: true,
+        versionKey: false
+    }
+)
+
+const WebScheme = new mongoose.Schema(
     {
         // Datos base
         ciudad: {
-            type: String
+            type: String,
+            required: true
         },
         actividad: {
             type: String,
+            required: true
         },
         titulo:{
-            type: String 
+            type: String,
+            required: true 
         },
         resumen:{
-            type: Number            
+            type: String,
+            required: true          
         },
         textos:[{
             type: String
@@ -27,28 +52,20 @@ const UserScheme = new mongoose.Schema(
 
         // Datos no modificables por el comercio
         scoring:{
-            type: Number
+            type: Number,
+            default: 0
         },
         numPuntuaciones:{
-            type: Number
+            type: Number,
+            default: 0
         },
         reseñas:[{
-            
-            texto:{
-                type: String
-            },
-            puntuacion:{
-                type: Number
-            },
-            idUsuario:{
-                type: mongoose.Schema.Types.ObjectId,
-                ref: "users"
-            }
-
+            type: ReseñaScheme
         }],
         idComercio:{
             type: mongoose.Schema.Types.ObjectId,
-            ref: "comercios"
+            ref: "comercios",
+            required: true
         }
     },
     {
@@ -56,4 +73,5 @@ const UserScheme = new mongoose.Schema(
         versionKey: false
     }
 )
-module.exports = mongoose.model("webs", UserScheme)
+WebScheme.plugin(mongooseDelete, {overrideMethods: "all"})
+module.exports = mongoose.model("webs", WebScheme)

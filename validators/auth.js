@@ -7,9 +7,10 @@ const validatorRegister = [
     check('password').exists().notEmpty().isString().withMessage('password is required'),
     check('edad').exists().notEmpty().isNumeric().withMessage('edad is required').isInt({ min: 1 }).withMessage('edad must be at least 1'),
     check('ciudad').exists().notEmpty().isString().withMessage('ciudad is required'),
-    check('recibirOfertas').exists().isBoolean().withMessage('recibirOfertas must be a boolean').toBoolean(),
+    check('intereses').optional().isArray().withMessage('intereses must be an array of strings'),
+    check('intereses.*').optional().isString().withMessage('intereses must be an array of strings'),
+    check('recibirOfertas').optional().isBoolean().withMessage('recibirOfertas must be a boolean').toBoolean(),
     check('role').optional().isIn(['user', 'admin']).withMessage('role must be user or admin'),
-    // check('role').optional().notEmpty().isIn(['user']).withMessage('role must be user'),
     (req, res, next) => {
         return validateResults(req, res, next);
     }
@@ -29,6 +30,8 @@ const validatorUpdateItem = [
     check('password').optional().isString().withMessage('password must be a string'),
     check('edad').optional().isNumeric().withMessage('edad must be a number').isInt({ min: 1 }).withMessage('edad must be at least 1'),
     check('ciudad').optional().isString().withMessage('ciudad must be a string'),
+    check('intereses').optional().isArray().withMessage('intereses must be an array of strings'),
+    check('intereses.*').optional().isString().withMessage('intereses must be an array of strings'),
     check('recibirOfertas').optional().isBoolean().withMessage('recibirOfertas must be a boolean').toBoolean(),
     (req, res, next) => {
         return validateResults(req, res, next);

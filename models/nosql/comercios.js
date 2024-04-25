@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 const mongooseDelete = require("mongoose-delete")
 
-const UserScheme = new mongoose.Schema(
+const ComercioScheme = new mongoose.Schema(
     {
         nombreComercio: {
             type: String,
@@ -17,7 +17,7 @@ const UserScheme = new mongoose.Schema(
             required: true
         },
         email:{
-            type: Number,  
+            type: String,  
             unique: true,
             required: true          
         },
@@ -37,4 +37,5 @@ const UserScheme = new mongoose.Schema(
         versionKey: false
     }
 )
-module.exports = mongoose.model("comercios", UserScheme)
+ComercioScheme.plugin(mongooseDelete, {overrideMethods: "all"})
+module.exports = mongoose.model("comercios", ComercioScheme)

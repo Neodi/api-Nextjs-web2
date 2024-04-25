@@ -27,8 +27,11 @@ const UserScheme = new mongoose.Schema(
         },
         recibirOfertas:{
             type: Boolean,
-            default: false,
+            default: true,
         },
+        intereses:[{
+            type: String
+        }],
         role:{
             type: ["user", "admin"], 
             default: "user"
