@@ -33,6 +33,8 @@ const validatorUpdateItem = [
     check('intereses').optional().isArray().withMessage('intereses must be an array of strings'),
     check('intereses.*').optional().isString().withMessage('intereses must be an array of strings'),
     check('recibirOfertas').optional().isBoolean().withMessage('recibirOfertas must be a boolean').toBoolean(),
+    check('role').optional().isIn(['user', 'admin']).withMessage('role must be user or admin'),
+
     (req, res, next) => {
         return validateResults(req, res, next);
     }

@@ -1,18 +1,20 @@
 const express = require("express")
 const router = express.Router();
 
-const { getItems, getItem, createItem, updateItem, deleteItem, softDeleteItem } = require("../controllers/comercios")
+const { getItems, getItem, createItem, updateItem, deleteItem, softDeleteItem, getTokenComercio } = require("../controllers/comercios")
 const { validatorGetItem, validatorCreateItem, validatorUpdateItem } = require("../validators/comercios")
 
+const { authMiddleware, comercioMiddleware } = require("../middleware/session")
+const { checkRol } = require("../middleware/rol")
 
 router.get("/", getItems)
-router.get("/:id", validatorGetItem, getItem)
+router.get("/:id", validatorGetItem, getTokenComercio)
 
-router.post("/", validatorCreateItem, createItem)
 
-router.patch("/:id", validatorGetItem, validatorUpdateItem, updateItem)
+router.post("/", authMiddleware, checkRol(['admin']), validatorCreateItem, createItem)
 
-router.delete("/totalDelete/:id", validatorGetItem, deleteItem)
-router.delete("/softDelete/:id", validatorGetItem, softDeleteItem)
+// router.patch("/:id", validatorGetItem, validatorUpdateItem, updateItem)
+router.patch("/", comercioMiddleware, validatorUpdateItem, updateItem)
 
+router.delete("/:soft", comercioMiddleware, softDeleteItem)
 module.exports = router;

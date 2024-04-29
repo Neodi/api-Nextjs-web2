@@ -1,7 +1,11 @@
 ### //              Variables              // ###
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjJhMzYxNWQxOGM5OWViOTlkOTE5NTAiLCJyb2xlIjpbInVzZXIiXSwiaWF0IjoxNzE0MDQyMzg5LCJleHAiOjE3MTQwNzExODl9.bCuhXmXJ7kO2nl8SHVee3pLbdNjpFwu1WmZ965s7OHc
-@idUSerTest = 662a3615d18c99eb99d91950
+@tokenAdmin = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjJiNzQxMDVlNGQ3NzNjZTU4ZDJlNmMiLCJyb2xlIjpbImFkbWluIl0sImlhdCI6MTcxNDQxMzg0MCwiZXhwIjoxNzE0NDQyNjQwfQ.wUY9qXfkJzlkfd2FVepEdCDREw9fjUL0dtdp75rZk5s
+@tokenUser = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjJhMzYxNWQxOGM5OWViOTlkOTE5NTAiLCJyb2xlIjpbInVzZXIiXSwiaWF0IjoxNzE0MTI0MTY4LCJleHAiOjE3MTQxNTI5Njh9.3VWTp3WV3Sz27DntuY3Mk_G2B3AgC3BVXKT9uEJs9Mo
 
+@tokenComercio = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjJiNzRmMDVlNGQ3NzNjZTU4ZDJlNzAiLCJpYXQiOjE3MTQ0MTU4MzMsImV4cCI6MTcxNDQ0NDYzM30._TvcRQqGFdcijZ5o6BYuySPwEwYyUbk6awpvwMvqmhI
+
+@idUSerTest = 662a3615d18c99eb99d91950
+@idAdmin = 662b74105e4d773ce58d2e6c
 ### ---------------- CRUD Strorage ----------------
 
 ### ------POST------
@@ -58,11 +62,12 @@ POST http://localhost:3000/api/auth/register HTTP/1.1
 Content-Type: application/json
 
 {
-    "nombre": "manolin",
-    "email": "manolin@mail.com",
-    "password": "123456",
+    "nombre": "davidAdmin",
+    "email": "david@mail.com",
+    "password": "admin",
     "edad": 25,
     "ciudad": "Madrid",
+    "roles": ["user"],
     "recibirOfertas" : true
 }
 ###
@@ -77,15 +82,16 @@ Content-Type: application/json
 ### ------GET------
 ###
 GET http://localhost:3000/api/auth/ HTTP/1.1
-Authorization: Bearer {{token}}
+Authorization: Bearer {{tokenUser}}
 
 ### ------PATCH------
 ###
-PATCH http://localhost:3000/api/auth/662a2e522a21b07407db70ec HTTP/1.1
+PATCH http://localhost:3000/api/auth/{{idAdmin}} HTTP/1.1
 Content-Type: application/json
 
 {
-    "password": "hola"
+    "nombre": "David Admin",
+    "role": ["admin"]
 }
 
 ### ------DELETE------
@@ -178,3 +184,61 @@ Content-Type: application/json
 DELETE http://localhost:3000/api/webs/totalDelete/662ac84b81da418c0773b6dd HTTP/1.1
 ###
 DELETE http://localhost:3000/api/webs/softDelete/662ac84b81da418c0773b6dd HTTP/1.1
+
+
+###  ---------------- Requisitos funcionales  ----------------
+  
+# 1.- Solo un admin puede registrar un comercio, después facilitará el token JWT a este.
+
+# router.post("/", authMiddleware, checkRol(['admin']), validatorCreateItem, createItem)
+
+### Login como admin
+POST http://localhost:3000/api/auth/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "email": "david@mail.com",
+    "password": "admin"
+}
+### Login como user
+POST http://localhost:3000/api/auth/login HTTP/1.1
+Content-Type: application/json
+
+{
+    "email": "manolin@mail.com",
+    "password": "123456"
+}
+###
+POST http://localhost:3000/api/comercios/ HTTP/1.1
+Authorization: Bearer {{tokenAdmin}}
+Content-Type: application/json
+
+{
+    "nombreComercio": "El Corte CR8",
+    "cif": "CR8",
+    "direccion": "Calle CR8 1",
+    "email": "CR8@mail.com",
+    "telefono": 888
+}
+
+###
+# 2.- El comercio solo podrá subir/actualizar contenido en su propia página y requiere de un
+# token JWT para hacerlo. Pero no puede modificar el Scoring, la cantidad de votaciones ni
+# las reseñas. El comercio puede darse de baja y borrar su página
+
+# router.patch("/:id", authMiddleware, checkRol(['comercio']), validatorUpdateItem, updateItem)
+# router.delete("/softDelete/:id", authMiddleware, checkRol(['comercio']), softDeleteItem)
+GET http://localhost:3000/api/comercios/ HTTP/1.1
+###
+GET http://localhost:3000/api/comercios/662b74f05e4d773ce58d2e70 HTTP/1.1
+###
+PATCH http://localhost:3000/api/comercios/ HTTP/1.1
+Authorization: Bearer {{tokenComercio}}
+Content-Type: application/json
+
+{
+    "scoring": 123
+}
+###
+DELETE http://localhost:3000/api/comercios/true HTTP/1.1
+Authorization: Bearer {{tokenComercio}}

@@ -65,7 +65,7 @@ const loginCtrl = async (req, res) => {
 const updateUser = async (req, res) => {
     try {       
         const {id, ...body} = matchedData(req)
-        
+        console.log("Body update user", body)
         if (body.password) {
             body.password = await encrypt(body.password)
         }
