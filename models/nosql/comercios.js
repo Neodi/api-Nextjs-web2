@@ -3,6 +3,7 @@ const mongooseDelete = require("mongoose-delete")
 
 const ComercioScheme = new mongoose.Schema(
     {
+        
         nombreComercio: {
             type: String,
             required: true
@@ -26,7 +27,6 @@ const ComercioScheme = new mongoose.Schema(
             unique: true,
             required: true
         },
-        
         idWeb:{
             type: mongoose.Schema.Types.ObjectId,
             ref: "webs"

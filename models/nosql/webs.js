@@ -5,7 +5,6 @@ const ReseñaScheme = new mongoose.Schema(
     {
         texto:{
             type: String,
-            required: true
         },
         puntuacion:{
             type: Number,

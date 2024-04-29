@@ -1,6 +1,6 @@
 ### //              Variables              // ###
 @tokenAdmin = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjJiNzQxMDVlNGQ3NzNjZTU4ZDJlNmMiLCJyb2xlIjpbImFkbWluIl0sImlhdCI6MTcxNDQxMzg0MCwiZXhwIjoxNzE0NDQyNjQwfQ.wUY9qXfkJzlkfd2FVepEdCDREw9fjUL0dtdp75rZk5s
-@tokenUser = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjJhMzYxNWQxOGM5OWViOTlkOTE5NTAiLCJyb2xlIjpbInVzZXIiXSwiaWF0IjoxNzE0MTI0MTY4LCJleHAiOjE3MTQxNTI5Njh9.3VWTp3WV3Sz27DntuY3Mk_G2B3AgC3BVXKT9uEJs9Mo
+@tokenUser = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjMwMjYyMWVlNjJkODBjODk5ZjQwNTUiLCJyb2xlIjpbInVzZXIiXSwiaWF0IjoxNzE0NDMxNTIxLCJleHAiOjE3MTQ0NjAzMjF9.9D6yhXhsaiLJrh5xvhDvG1E3iSJQGXnNg_I55iglSfc
 
 @tokenComercio = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjJiNzRmMDVlNGQ3NzNjZTU4ZDJlNzAiLCJpYXQiOjE3MTQ0MTU4MzMsImV4cCI6MTcxNDQ0NDYzM30._TvcRQqGFdcijZ5o6BYuySPwEwYyUbk6awpvwMvqmhI
 
@@ -146,19 +146,20 @@ POST http://localhost:3000/api/webs/ HTTP/1.1
 Content-Type: application/json
 
 {
-    "ciudad": "Benavente",
-    "actividad": "Cine",
-    "titulo": "Cine Benavente",
-    "resumen": "UN cine de toda la vida",
-    "textos":[
-        "Cine de toda la vida",
-        "Viva el cine",
-        "Cine para todos"
+    "ciudad": "Valencia",
+    "actividad": "Restaurante",
+    "titulo": "Restaurante El Prado",
+    "resumen": "Un restaurante con la mejor comida tradicional",
+    "textos": [
+      "Comida casera",
+      "Ambiente acogedor",
+      "Restaurante para todos"
     ],
-    "fotos" : [
-        "66284224d01227f22d8b153f"
+    "fotos": [
+      "66284224d01227f22d8b153f"
     ],
-    "idComercio": "662ac1f5acb591a5bc2d294f"
+    "idComercio": "662ac1f5acb591a5bc2d294f",
+    "scoring": 0
 }
 
 ### ------GET------
@@ -242,3 +243,42 @@ Content-Type: application/json
 ###
 DELETE http://localhost:3000/api/comercios/true HTTP/1.1
 Authorization: Bearer {{tokenComercio}}
+
+###
+# 3.- Un usuario anónimo puede consultar los comercios de una ciudad, los comercios de una
+# ciudad y de una actividad, (todo ello ordenado, o no, por el scoring de la página). Así como
+# también, de un comercio concreto por su identificador
+GET http://localhost:3000/api/webs/ HTTP/1.1
+###
+GET http://localhost:3000/api/webs/buscar/Valencia HTTP/1.1
+###
+GET http://localhost:3000/api/webs/buscar/Valencia?scoring=desc&actividad=museo HTTP/1.1
+###
+GET http://localhost:3000/api/webs/id/66301cb0b44fadc342356c77 HTTP/1.1
+
+
+###
+# 4.- Cualquier usuario puede registrarse para recibir ofertas de los comercios de su ciudad
+# en función de sus intereses si activa el flag permitirRecibirOfertas
+###
+POST http://localhost:3000/api/auth/register HTTP/1.1
+Content-Type: application/json
+
+{
+    "nombre": "frejo",
+    "email": "frejo@mail.com",
+    "password": "frejo",
+    "edad": 25,
+    "ciudad": "Benavente",
+    "roles": ["user"],
+    "recibirOfertas" : false
+}
+###
+GET http://localhost:3000/api/webs/ofertas/ HTTP/1.1
+Authorization: Bearer {{tokenUser}}
+
+
+
+
+
+

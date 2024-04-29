@@ -111,4 +111,36 @@ const getTokenComercio = async (req, res) => {
     }
 }
 
-module.exports = { getItems, getItem, createItem, updateItem, deleteItem, softDeleteItem, getTokenComercio}
+const buscarComercio = async (req, res) => {
+    const {ciudad} = matchedData(req)
+    const { actividad, scoring } = req.query
+    console.log("Ciudad", ciudad)
+    console.log("Actividad", actividad)
+    console.log("Scoring", scoring)
+    
+    try{
+        let query = {}
+        if(ciudad){
+            query = {ciudad}
+        }
+        if(actividad){
+            query = {...query, actividad}
+        }
+        if(scoring){
+            query = {...query, scoring}
+        }
+        console.log("Query", query)
+        const data = await comercioModel.find(query)
+        res.send(data)
+    }catch(err){
+        console.log(err)
+        handleHttpError(res, "ERROR_BUSCAR_COMERCIO")
+    }
+}
+
+module.exports = { 
+    getItems, getItem, 
+    createItem, 
+    updateItem, 
+    deleteItem, 
+    softDeleteItem, getTokenComercio}

@@ -51,4 +51,21 @@ const validatorUpdateItem = [
 ];
 
 
-module.exports = { validatorGetItem, validatorCreateItem, validatorUpdateItem }
+const validatorCiudad = [
+    check("ciudad").exists().notEmpty().isString(),
+    (req, res, next) => {
+        return validateResults(req, res, next)
+    }
+] 
+
+const validatorReseña = [
+    check("reseñas.texto").optional().isString().notEmpty(),
+    check("reseñas.puntuacion").optional().isInt().notEmpty(),
+    check("reseñas.idUsuario").optional().isMongoId().notEmpty(),
+    (req, res, next) => {
+        return validateResults(req, res, next)
+    }
+]
+
+
+module.exports = { validatorGetItem, validatorCreateItem, validatorUpdateItem, validatorCiudad}
