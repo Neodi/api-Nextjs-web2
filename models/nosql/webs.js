@@ -46,7 +46,7 @@ const WebScheme = new mongoose.Schema(
         }],
         fotos:[{
             type: mongoose.Schema.Types.ObjectId,
-            ref: "storage"
+            ref: "Storage"
         }],
 
         // Datos no modificables por el comercio

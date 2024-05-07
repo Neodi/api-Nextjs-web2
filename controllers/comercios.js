@@ -31,7 +31,7 @@ const getItem = async (req, res) =>{
 const createItem = async (req, res) => {
     try {
         const body = matchedData(req)
-        //console.log(body)
+
         const dataCreate = await comercioModel.create(body)
 
         const data ={
@@ -49,7 +49,7 @@ const createItem = async (req, res) => {
 const updateItem = async (req, res) => {
     
     try {
-        const idComercio = req.comercio._id
+        const idComercio = req.params.id
         const body = matchedData(req)
         
         const data = await comercioModel.findByIdAndUpdate(idComercio, body, { new: true })
@@ -73,8 +73,10 @@ const deleteItem = async (req, res) => {
 }
 
 const softDeleteItem = async (req, res) => {
-    const idComercio = req.comercio._id
-    if(req.params.soft === "true"){
+    const idComercio = matchedData(req)
+
+
+    if(req.query.soft === "true"){
         try {
             const data = await comercioModel.delete({_id: idComercio})
             res.send(data)

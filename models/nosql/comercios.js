@@ -29,7 +29,10 @@ const ComercioScheme = new mongoose.Schema(
         },
         idWeb:{
             type: mongoose.Schema.Types.ObjectId,
-            ref: "webs"
+            ref: "webs",
+            default:  function() {
+                return new mongoose.Types.ObjectId().toHexString();
+            }
         }
     },
     {

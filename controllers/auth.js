@@ -63,9 +63,10 @@ const loginCtrl = async (req, res) => {
 }
 
 const updateUser = async (req, res) => {
-    try {       
-        const {id, ...body} = matchedData(req)
-        console.log("Body update user", body)
+    try {  
+        const id = req.user._id     
+        const body = matchedData(req)
+
         if (body.password) {
             body.password = await encrypt(body.password)
         }
@@ -115,4 +116,27 @@ const getUsers = async (req, res) => {
     }
 }
 
-module.exports = { registerCtrl, loginCtrl, updateUser, getUsers, deleteUser, softDeleteUser }
+const borrarCuenta = async (req, res) => {
+    const id = req.user._id
+    let data = {}
+    if(req.params.soft === 'true'){
+        try{
+            data = await userModel.delete({_id:id})
+            res.send(data)
+        }catch(err){
+            console.log(err)
+            handleHttpError(res, 'ERROR_SOFT_DELETE_USER')
+        }
+    } else {
+        try{
+            data = await userModel.deleteOne({_id:id})
+            res.send(data)
+        }catch(err){
+            console.log(err)
+            handleHttpError(res, 'ERROR_TOTAL_DELETE_USER')
+        }
+    }
+}
+
+
+module.exports = { registerCtrl, loginCtrl, updateUser, getUsers, deleteUser, softDeleteUser, borrarCuenta }

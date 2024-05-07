@@ -17,19 +17,13 @@ const validatorCreateItem = [
     check("textos.*").isString(),
     check("fotos").optional().isArray().notEmpty(),
     check("fotos.*").isMongoId(),
-    check("scoring").optional().isInt(),
-    check("numPuntuaciones").optional().isInt(),
-    check("reseñas").optional().isArray().notEmpty(),
-    check("reseñas.*.texto").isString().notEmpty(),
-    check("reseñas.*.puntuacion").isInt().notEmpty(),
-    check("reseñas.*.idUsuario").isMongoId().notEmpty(),
-    check("idComercio").isMongoId().notEmpty(),
+
     (req, res, next) => {
         return validateResults(req, res, next)
     }
 ];
 
-const validatorUpdateItem = [
+const validatorUpdateItemAdmin = [
     check("ciudad").optional().isString().notEmpty(),
     check("actividad").optional().isString().notEmpty(),
     check("titulo").optional().isString().notEmpty(),
@@ -50,6 +44,19 @@ const validatorUpdateItem = [
     }
 ];
 
+const validatorUpdateItem = [
+    check("ciudad").optional().isString().notEmpty(),
+    check("actividad").optional().isString().notEmpty(),
+    check("titulo").optional().isString().notEmpty(),
+    check("resumen").optional().isString().notEmpty(),
+    check("textos").optional().isArray().notEmpty(),
+    check("textos.*").isString(),
+    check("fotos").optional().isArray().notEmpty(),
+    check("fotos.*").isMongoId(),
+    (req, res, next) => {
+        return validateResults(req, res, next)
+    }
+];
 
 const validatorCiudad = [
     check("ciudad").exists().notEmpty().isString(),
@@ -58,14 +65,13 @@ const validatorCiudad = [
     }
 ] 
 
-const validatorReseña = [
-    check("reseñas.texto").optional().isString().notEmpty(),
-    check("reseñas.puntuacion").optional().isInt().notEmpty(),
-    check("reseñas.idUsuario").optional().isMongoId().notEmpty(),
+const validatorReview = [
+    check("texto").optional().isString().notEmpty(),
+    check("puntuacion").isInt().notEmpty(),
     (req, res, next) => {
         return validateResults(req, res, next)
     }
 ]
 
 
-module.exports = { validatorGetItem, validatorCreateItem, validatorUpdateItem, validatorCiudad}
+module.exports = { validatorGetItem, validatorCreateItem, validatorUpdateItem, validatorCiudad, validatorReview, validatorUpdateItemAdmin}
