@@ -25,3 +25,12 @@ app.use("/api", require("./routes"))
 // --------------------------------------------
 
 app.use(express.static("storage"))
+
+// --------------------------------------------
+const swaggerUi = require("swagger-ui-express")
+const swaggerSpecs = require("./docs/swagger")
+
+app.use("/api-docs",
+        swaggerUi.serve,
+        swaggerUi.setup(swaggerSpecs)
+)

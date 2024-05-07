@@ -53,7 +53,7 @@ const updateItem = async (req, res) => {
     }   
 }
 
-const updateItemComercio = async (req, res) => {
+const updateWebComercio = async (req, res) => {
     const id = req.comercio.idWeb
     try {
         const body  = matchedData(req)
@@ -221,6 +221,6 @@ module.exports = {
     createItem, 
     updateItem, 
     deleteItem, 
-    softDeleteItem, buscarWebComercio, añadirReseña, updateItemComercio, getMailsUsers,
+    softDeleteItem, buscarWebComercio, añadirReseña, updateWebComercio, getMailsUsers,
     postPhotoWeb}
 

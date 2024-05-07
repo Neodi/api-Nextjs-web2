@@ -166,7 +166,7 @@ Content-Type: application/json
 ###
 GET http://localhost:3000/api/webs/ HTTP/1.1
 ###
-GET http://localhost:3000/api/webs/662ac86381da418c0773b6e0 HTTP/1.1
+GET http://localhost:3000/api/webs/id/6630f32fdd0123f99b145967 HTTP/1.1
 
 ### ------PATCH------
 ###
@@ -376,3 +376,12 @@ GET http://localhost:3000/api/webs/ofertas HTTP/1.1
 Authorization: Bearer {{tokenComercio}}
 
 
+
+
+
+###############################################
+########  HISTORIAS USUARIO  ##################
+###############################################
+
+# PUBLIC USER
+GET http://localhost:3000/api/webs/
