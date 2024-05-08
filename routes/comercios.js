@@ -27,7 +27,7 @@ const { checkRol } = require("../middleware/rol")
  *       500:
  *         description: Unexpected error
  */
-router.get("/", getItems)
+router.get("/", authMiddleware, checkRol(['admin']), getItems)
 
 /**
  * @swagger
@@ -54,7 +54,7 @@ router.get("/", getItems)
  *       500:
  *         description: Error inesperado
  */
-router.get("/id/:id", validatorGetItem, getItem)
+router.get("/id/:id", authMiddleware, checkRol(['admin']), validatorGetItem, getItem)
 
 /**
  * @swagger

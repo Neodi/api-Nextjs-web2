@@ -33,7 +33,6 @@ const createItem = async (req, res) => {
         const body = matchedData(req)
         body._id = idWeb
         body.idComercio = req.comercio._id
-        console.log(body)
         const data = await webModel.create(body)
         res.send(data)
     } catch (err) {
@@ -67,9 +66,7 @@ const updateWebComercio = async (req, res) => {
 
 const deleteItem = async (req, res) => {
     const  id  = req.comercio.idWeb
-    console.log("id ", id)
     if(req.params.soft === "soft"){
-        console.log("Soft")
         try {
             const data = await webModel.delete({_id: id})
             res.send(data)
@@ -78,7 +75,6 @@ const deleteItem = async (req, res) => {
             handleHttpError(res, "ERROR_SOFT_DELETE_ITEM")
         }
     }else{
-        console.log("Total")   
         try {
             const data = await webModel.deleteOne({_id: id})
             res.send(data)
@@ -135,13 +131,23 @@ const añadirReseña = async (req, res) => {
     const idUser = req.user._id
     const { id, texto, puntuacion } = matchedData(req)
     const reseña = { idUsuario: idUser, texto, puntuacion }
-    console.log("Reseña", reseña)
+    // console.log("Reseña", reseña)
 
     try {
+
+        // Buscar la web por id
+        const web = await webModel.findById(id)
+
+        // Verificar si el usuario ya ha escrito una reseña
+        const yaHaEscritoReseña = web.reseñas.some(reseña => reseña.idUsuario.toString() === idUser.toString())
+        if (yaHaEscritoReseña) {
+            return res.status(400).send({ error: 'El usuario ya ha escrito una reseña' })
+        }
+        
         const data = await webModel.findByIdAndUpdate(id, { $push: { reseñas: reseña }, $inc: { numPuntuaciones: 1 } }, { new: true })
-        console.log("Data", data)
+        // console.log("Data", data)
         const nuevoScoring = nuevaMedia(data.scoring, data.numPuntuaciones-1, puntuacion)
-        console.log("Nuevo Scoring", nuevoScoring)
+        // console.log("Nuevo Scoring", nuevoScoring)
         const data2 = await webModel.findByIdAndUpdate(id, { scoring: nuevoScoring }, { new: true })
         res.send(data2)
     } catch (err) {

@@ -35,8 +35,8 @@ const createItem = async (req, res) => {
         const dataCreate = await comercioModel.create(body)
 
         const data ={
-            token: await tokenSign(dataCreate),
-            user: dataCreate
+            tokenComercio: await tokenSign(dataCreate),
+            comercio: dataCreate
         }
 
         res.send(data)
@@ -73,8 +73,9 @@ const deleteItem = async (req, res) => {
 }
 
 const softDeleteItem = async (req, res) => {
-    const idComercio = matchedData(req)
-
+    const {id} = matchedData(req)
+    const idComercio = id
+    console.log("idComercio", idComercio)
 
     if(req.query.soft === "true"){
         try {

@@ -229,7 +229,7 @@ Content-Type: application/json
 # router.delete("/softDelete/:id", authMiddleware, checkRol(['comercio']), softDeleteItem)
 GET http://localhost:3000/api/comercios/ HTTP/1.1
 ###
-GET http://localhost:3000/api/comercios/getToken/6630f32fdd0123f99b145966 HTTP/1.1
+GET http://localhost:3000/api/comercios/getToken/663a765f2039a4c06d21fc2c HTTP/1.1
 ###
 PATCH http://localhost:3000/api/comercios/ HTTP/1.1
 Authorization: Bearer {{tokenComercio}}
