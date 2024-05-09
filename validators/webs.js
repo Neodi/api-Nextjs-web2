@@ -73,5 +73,13 @@ const validatorReview = [
     }
 ]
 
+const validatorTextos = [
+    check("textos").exists().notEmpty().isArray(),
+    check("textos.*").isString(),
+    (req, res, next) => {
+        return validateResults(req, res, next)
+    }
+]
 
-module.exports = { validatorGetItem, validatorCreateItem, validatorUpdateItem, validatorCiudad, validatorReview, validatorUpdateItemAdmin}
+
+module.exports = { validatorGetItem, validatorCreateItem, validatorUpdateItem, validatorCiudad, validatorReview, validatorUpdateItemAdmin, validatorTextos}

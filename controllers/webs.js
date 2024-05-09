@@ -143,7 +143,7 @@ const añadirReseña = async (req, res) => {
         if (yaHaEscritoReseña) {
             return res.status(400).send({ error: 'El usuario ya ha escrito una reseña' })
         }
-        
+
         const data = await webModel.findByIdAndUpdate(id, { $push: { reseñas: reseña }, $inc: { numPuntuaciones: 1 } }, { new: true })
         // console.log("Data", data)
         const nuevoScoring = nuevaMedia(data.scoring, data.numPuntuaciones-1, puntuacion)
@@ -222,11 +222,25 @@ async function postPhotoStorage(file) {
     }
 }
 
+const postTextos = async (req, res) => {
+    const id = req.comercio.idWeb
+    try {
+        const {textos} = matchedData(req)
+        console.log("Textos", textos)
+        const data = await webModel.findByIdAndUpdate(id, { $push: { textos: textos } }, { new: true })
+        res.send(data)
+    }
+    catch (err) {
+        console.log(err)
+        handleHttpError(res, "ERROR_CREATE_ITEM")
+    }
+}
+
 module.exports = { 
     getItems, getItem, 
     createItem, 
     updateItem, 
     deleteItem, 
     softDeleteItem, buscarWebComercio, añadirReseña, updateWebComercio, getMailsUsers,
-    postPhotoWeb}
+    postPhotoWeb, postTextos}
 

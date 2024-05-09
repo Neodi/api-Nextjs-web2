@@ -5,9 +5,9 @@ const uploadMiddleware = require("../utils/handleStorage")
 
 const { getItems, getItem, createItem, updateItem, deleteItem,
         buscarWebComercio, getMailsUsers, añadirReseña, updateWebComercio,
-        postPhotoWeb } = require("../controllers/webs")
+        postPhotoWeb, postTextos } = require("../controllers/webs")
         
-const { validatorGetItem, validatorCreateItem, validatorUpdateItem, validatorCiudad, validatorReview } = require("../validators/webs")
+const { validatorGetItem, validatorCreateItem, validatorUpdateItem, validatorCiudad, validatorReview, validatorTextos } = require("../validators/webs")
 
 const { authMiddleware, comercioMiddleware } = require("../middleware/session")
 const { checkRol } = require ("../middleware/rol")
@@ -173,6 +173,35 @@ router.post("/", comercioMiddleware,  validatorCreateItem, createItem)
  */
 router.post("/addReview/:id", authMiddleware, validatorGetItem, validatorReview, añadirReseña)
 
+/**
+ * @swagger
+ * /api/webs/addTexto/:
+ *   post:
+ *     summary: Añade una texto a un comercio
+ *     description: Este endpoint permite a un comercio añadir una nevo texto a su perfil. Solo los comercios pueden añadir textos.
+ *     tags: [Comercios]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: body
+ *         name: texto 
+ *         description: Texto a añadir
+ *         required: true
+ *         schema:
+ *           type: arry     
+ *           items:
+ *             type: string   
+ *     responses:
+ *       200:
+ *         description: Texto añadida exitosamente
+ *       400:
+ *         description: Algunos parámetros faltan o son inválidos
+ *       401:
+ *         description: No autorizado
+ *       500:
+ *         description: Error inesperado
+ */
+router.post("/addTexto/", comercioMiddleware, validatorTextos, postTextos)
 
 /**
  * @swagger

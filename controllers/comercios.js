@@ -100,7 +100,7 @@ const softDeleteItem = async (req, res) => {
 
 const getTokenComercio = async (req, res) => {
     try {
-        const { id } = matchedData(req)
+        const  {id}  = matchedData(req)
         const comercio = await comercioModel.findById(id)
         const data = {
             token: await tokenSign(comercio),
