@@ -35,5 +35,21 @@ app.use("/api-docs",
         swaggerUi.setup(swaggerSpecs)
 )
 
+// --------------------------------------------
+
+const morganBody = require("morgan-body")
+const loggerStream = require("./utils/handleLogger")
+
+morganBody(app, {
+    noColors: true, //limpiamos el String de datos lo máximo posible antes de mandarlo a Slack
+    skip: function(req, res) { //Solo enviamos errores (4XX de cliente y 5XX de servidor)
+        return res.statusCode < 400
+    },
+    stream: loggerStream
+})
+
+
+
+
 
 module.exports = app
