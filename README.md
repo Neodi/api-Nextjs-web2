@@ -7,7 +7,7 @@ Este proyecto consiste en una aplicación backend diseñada para permitir que co
 ## Características
 
 - **API Restful:** Proporciona endpoints para administrar usuarios, comercios y contenido.
-- **Base de datos:** Compatible con bases de datos relacionales o NoSQL.
+- **Base de datos:** Compatible con bases de datos relacionales o NoSQL (mongoose).
 - **Autenticación:** Uso de JWT para la autenticación y autorización de usuarios y comercios.
 - **Roles y permisos:**
   - **Admins:** Registran y administran los comercios.
@@ -41,8 +41,3 @@ Este proyecto consiste en una aplicación backend diseñada para permitir que co
 - **Pruebas Unitarias:** Implementadas con JEST.
 - **Validación de Datos:** Uso de `validators` y `matchedData` para garantizar datos seguros.
 - **Mejoras:** Se valoran mejoras funcionales y técnicas sobre los requisitos básicos.
-
-## Requisitos Previos
-
-- [Node.js](https://nodejs.org/) >= 14.x
-- Base de datos (Relacional o NoSQL)
